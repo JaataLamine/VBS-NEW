@@ -55,7 +55,6 @@ export const CreatePrestataire = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      setError(false);
       const res = await fetch("/api/prestataire/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -7,7 +7,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 
-export const SingIn = () => {
+export const SignUp = () => {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -17,16 +17,15 @@ export const SingIn = () => {
     setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  // Operations a effectuer pr se connecter
+  // Operations a effectuer pr la creation de compte
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(signInStart());
     try {
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(formData),
-        credentials: "include",
       });
       const data = await res.json();
       if (data.success === false) {
@@ -34,7 +33,7 @@ export const SingIn = () => {
         return;
       }
       dispatch(singInSuccess(data));
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       dispatch(signInFailure(error.message));
     }
@@ -42,13 +41,13 @@ export const SingIn = () => {
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Connection</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <h1 className="text-3xl text-center font-semibold my-7">Inscription</h1>
         <input
           type="text"
           id="username"
           placeholder="Nom d'utilisateur"
-          className="border p-3 rounded-lg"
+          className="boder p-3 rounded-lg"
           onChange={handleChange}
         />
         <input
@@ -58,18 +57,32 @@ export const SingIn = () => {
           className="boder p-3 rounded-lg"
           onChange={handleChange}
         />
+        <input
+          type="text"
+          id="address"
+          placeholder="Adresse domicile"
+          className="boder p-3 rounded-lg"
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          id="phone"
+          placeholder="Numero de telephone"
+          className="boder p-3 rounded-lg"
+          onChange={handleChange}
+        />
         <button
           disabled={loading}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          {loading ? "Loading..." : "Connection"}
+          {loading ? "Loading..." : "Inscription"}
         </button>
       </form>
       <div className="flex gap-2 mt-5 text-xl">
-        <p>Vous n'avez pas de compte?</p>
-        <Link to="/signup">
+        <p>Vous avez deja un compte?</p>
+        <Link to="/signin">
           <span className="hover:underline font-semibold text-blue-800">
-            Inscrivez-vous
+            Connectez-vous
           </span>
         </Link>
       </div>

@@ -1,21 +1,46 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  prestataireAccepted,
+  prestataireDeny,
+  prestataireSubscribe,
+} from "../redux/prestataire/prestataireSlice";
 
 export const PendingPrestataire = () => {
   const [prestataires, setPrestataires] = useState([]);
   const [isValid, setIsValid] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadPrestataire, setLoadPrestataire] = useState(false);
+  const { prestataire, loading } = useSelector((state) => state.prestataire);
+  const dispatch = useDispatch();
 
   console.log(isValid);
 
   // Gerer la validation du prestataire
-  const handleCheckbox = (e) => {
+  const handleCheckbox = () => {
+    // setIsValid(!isValid);
+    // setIsValid((prev) => ({ ...prev, isValid: !isValid }));
     // setPrestataires((prev) => ({ ...prev, isValid: !isValid }));
   };
 
   // Gerer la confirmation de la validation du prestataire
   const handleConfirm = async (e) => {
     e.preventDefault();
-    await fetch(`/api/prestataire`);
+    try {
+      dispatch(prestataireSubscribe());
+      const res = await fetch(`/api/prestataire/validate/${prestataire._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "Application/json" },
+        body: JSON.stringify(isValid),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(prestataireDeny(data.message));
+        return;
+      }
+      dispatch(prestataireAccepted(data));
+    } catch (error) {
+      dispatch(prestataireDeny(error.message));
+    }
   };
 
   // Gerer la suppression du prestataire
@@ -25,19 +50,20 @@ export const PendingPrestataire = () => {
 
   useEffect(() => {
     const fetchPrestataires = async () => {
-      setLoading(true);
+      dispatch(prestataireSubscribe());
       const res = await fetch("/api/prestataire/pending");
       const resData = await res.json();
       setPrestataires(resData);
-      setLoading(false);
+      setLoadPrestataire(false);
     };
     fetchPrestataires();
   }, []);
+
   console.log(prestataires);
 
   return (
     <div className="relative overflow-x-auto max-w-full mx-auto shadow-md sm:rounded-lg">
-      {loading ? (
+      {loadPrestataire ? (
         <p>Loading...</p>
       ) : (
         <table className="w-full text-sm text-left rtl:text-right text-gray-700">
@@ -91,7 +117,7 @@ export const PendingPrestataire = () => {
                 </td>
                 <td className="text-base mx-auto px-6 py-4">
                   <button
-                    disabled={!isValid}
+                    disabled={!isValid || loading}
                     onClick={handleConfirm}
                     className="font-medium text-blue-600 hover:underline px-6 py-4 disabled:opacity-50 disabled:hover:none"
                   >

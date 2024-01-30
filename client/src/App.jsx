@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { SingIn } from "./pages/SingIn";
-import { SingUp } from "./pages/SingUp";
+import { SignIn } from "./pages/SignIn";
+import { SignUp } from "./pages/SignUp";
 import { FaireDemande } from "./pages/FaireDemande";
 import { CreatePrestataire } from "./pages/CreatePrestataire";
 import { CreateService } from "./pages/CreateService";
@@ -32,8 +32,8 @@ function App() {
               element={<PendingPrestataire />}
             />
           </Route>
-          <Route path="/SingIn" element={<SingIn />} />
-          <Route path="/SingUp" element={<SingUp />} />
+          <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/SignUp" element={<SignUp />} />
           <Route element={<PrivateRoute />}>
             <Route path="/Profile" element={<Profile />} />
             <Route element={<PrivateRouteSuperAdmin />}>
