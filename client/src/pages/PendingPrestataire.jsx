@@ -16,7 +16,13 @@ export const PendingPrestataire = () => {
   console.log(isValid);
 
   // Gerer la validation du prestataire
-  const handleCheckbox = () => {
+  const handleCheckbox = (e) => {
+    const prestataire = prestataires.find(
+      (prestataire) => prestataire.id == e.id
+    );
+    prestataire.isValid = !isValid;
+    setIsValid(prestataire.isValid); // TODO:
+    console.log(prestataire);
     // setIsValid(!isValid);
     // setIsValid((prev) => ({ ...prev, isValid: !isValid }));
     // setPrestataires((prev) => ({ ...prev, isValid: !isValid }));
@@ -107,6 +113,7 @@ export const PendingPrestataire = () => {
                 <td className="text-base px-6 py-4">
                   <div className="flex items-center">
                     <input
+                      id={prestataire.id}
                       type="checkbox"
                       name="validation"
                       value={isValid}

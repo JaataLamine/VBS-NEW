@@ -49,7 +49,7 @@ export const FaireDemande = () => {
     <>
       <div className="mb-10 p-3 max-w-lg mx-auto">
         <h1 className="text-3xl text-center font-semibold my-7">
-          Create Demandes
+          Creer une Demande
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <select
@@ -57,7 +57,7 @@ export const FaireDemande = () => {
             className="border p-3 rounded-lg"
             onChange={handleChange}
           >
-            <option value="">-- SERVICE DEMANDE --</option>
+            <option value="">-- CHOISISSEZ UN SERVICE --</option>
             <option value="menagere">Menage</option>
             <option value="lingeriere">Lingerie</option>
             <option value="livreur">Livreur</option>
@@ -67,14 +67,6 @@ export const FaireDemande = () => {
             <option value="plomberie">Plomberie</option>
             <option value="mecanique">Mecanique</option>
           </select>
-          <input
-            type="text"
-            id="username"
-            value={formData.username}
-            placeholder="Renseigner votre nom et prenom"
-            className="border p-3 rounded-lg"
-            onChange={handleChange}
-          />
           <input
             type="text"
             id="address"

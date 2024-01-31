@@ -88,7 +88,7 @@ export const CreatePrestataire = () => {
             type="text"
             id="name"
             value={formData.name}
-            placeholder="Nom du prestataire"
+            placeholder="Nom et Prénom du prestataire"
             className="border p-3 rounded-lg"
             onChange={handleChange}
           />
