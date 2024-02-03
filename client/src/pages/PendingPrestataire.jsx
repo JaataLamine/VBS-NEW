@@ -51,7 +51,9 @@ export const PendingPrestataire = () => {
 
   // Gerer la suppression du prestataire
   const handleDelete = async () => {
-    await fetch(`/api/prestataire/`);
+    const res = await fetch(`/api/prestataire/delete/${prestataire._id}`, {
+      method: "DELETE",
+    });
   };
 
   useEffect(() => {

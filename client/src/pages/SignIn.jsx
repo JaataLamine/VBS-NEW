@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInStart,
-  singInSuccess,
+  signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
 
 export const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -20,8 +20,8 @@ export const SignIn = () => {
   // Operations a effectuer pr se connecter
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signInStart());
     try {
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -33,8 +33,15 @@ export const SignIn = () => {
         dispatch(signInFailure(data.message));
         return;
       }
-      dispatch(singInSuccess(data));
-      navigate("/");
+      dispatch(signInSuccess(data));
+      if (currentUser) {
+        if (currentUser.isSuperAdmin) {
+          navigate("/SuperAdminDashboard/Admin");
+        } else if (currentUser.isAdmin) {
+          navigate("/AdminDashboard/Demande");
+        }
+        navigate("/");
+      }
     } catch (error) {
       dispatch(signInFailure(error.message));
     }
@@ -66,7 +73,7 @@ export const SignIn = () => {
         </button>
       </form>
       <div className="flex gap-2 mt-5 text-xl">
-        <p>Vous n'avez pas de compte?</p>
+        <p>Vous n&apos;avez pas de compte?</p>
         <Link to="/signup">
           <span className="hover:underline font-semibold text-blue-800">
             Inscrivez-vous

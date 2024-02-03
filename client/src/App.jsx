@@ -8,6 +8,7 @@ import { CreateService } from "./pages/CreateService";
 import { Profile } from "./pages/Profile";
 import { Demandes } from "./pages/Demandes";
 import { Prestataires } from "./pages/Prestataires";
+import { SuperAdminDashboard } from "./pages/SuperAdminDashboard";
 import {
   PrivateRoute,
   PrivateRouteAdmin,
@@ -37,6 +38,10 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/Profile" element={<Profile />} />
             <Route element={<PrivateRouteSuperAdmin />}>
+              <Route
+                path="/SuperAdminDashboard"
+                element={<SuperAdminDashboard />}
+              />
               <Route path="/CreateService" element={<CreateService />} />
             </Route>
             <Route element={<PrivateRouteAdmin />}>

@@ -7,7 +7,7 @@ import {
 } from "../redux/user/userSlice";
 
 export const Header = () => {
-  const { user } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,9 +52,9 @@ export const Header = () => {
                 Trouver un travail
               </li>
             </Link>
-            {user ? (
+            {currentUser ? (
               <>
-                {user.isSuperAdmin ? (
+                {currentUser.isSuperAdmin ? (
                   <>
                     <Link to="/PendingPrestataire">
                       <li className="font-medium tracking-wide text-slate-900 btn btn-sm btn-link">
@@ -72,7 +72,7 @@ export const Header = () => {
                 )}
                 <Link to="/Profile" className="font-bold">
                   <li className="relative inline-flex items-center justify-center w-full h-10 px-3 py-7 overflow-hidden bg-gray-100 rounded-full shadow-xl hover:bg-slate-700 hover:text-gray-100">
-                    <span className="font-medium">{user.username}</span>
+                    <span className="font-medium">{currentUser.username}</span>
                   </li>
                 </Link>
                 <Link onClick={signout}>
