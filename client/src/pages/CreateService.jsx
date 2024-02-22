@@ -3,73 +3,142 @@ import { Footer } from "../components/Footer";
 
 // Page de creation de service
 export const CreateService = () => {
-  const [formData, setFormData] = useState({});
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [files, setFiles] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-  };
+  // Disable the inputs and the button if selected
+  // let inputUrl = document.querySelector("#imageUrl");
+  // let inputUpload = document.querySelector("#imageUpload");
+
+  // inputUrl.addEventListener("change", () => {
+  //   if (inputUrl.value.length > 0) {
+  //     inputUpload.disable = true;
+  //   } else {
+  //     inputUpload.disable = false;
+  //   }
+  // });
+
+  // inputUpload.addEventListener("change", () => {
+  //   if (inputUpload.value.length > 0) {
+  //     inputUrl.disable = true;
+  //   } else {
+  //     inputUrl.disable = false;
+  //   }
+  // });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/service/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        setError(data.error);
-        return;
+    if (files) {
+      try {
+        setLoading(true);
+        setError(false);
+        const formData = new FormData();
+        formData.set("name", name);
+        formData.set("description", description);
+        formData.set("file", files[0]);
+        const res = await fetch("/api/service/create", {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
+        const data = await res.json();
+        setLoading(false);
+        if (data.success === false) {
+          setError(data.message);
+          return;
+        }
+        setLoading(false);
+        setIsSuccess("Service cree avec succes");
+      } catch (error) {
+        setLoading(false);
+        setError(error.message);
       }
-      setFormData(data);
-      setLoading(false);
-      setError("Service created successfully");
-    } catch (error) {
-      setError(error.message);
+    } else if (imageUrl.length > 0) {
+      try {
+        setLoading(true);
+        setError(false);
+        const res = await fetch("/api/service/create", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ name, description, imageUrl }),
+        });
+        const data = await res.json();
+        setLoading(false);
+        if (data.success === false) {
+          setError(data.message);
+          return;
+        }
+        setName(data.name);
+        setDescription(data.description);
+        setImageUrl(data.imageUrl);
+        setLoading(false);
+        setIsSuccess("Service cree avec succes");
+      } catch (error) {
+        setLoading(false);
+        setError(error.message);
+      }
     }
   };
 
   return (
     <>
-      <div className="mb-10 p-3 max-w-lg mx-auto">
+      <div className="max-w-lg p-3 mx-auto mb-10">
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
-          <h1 className="text-3xl text-center font-semibold my-7">
+          <h1 className="text-3xl font-semibold text-center my-7">
             Creer un nouveau service
           </h1>
           <input
             id="name"
             type="text"
+            value={name}
             placeholder="Nom du service"
-            className="border p-3 rounded-lg"
-            onChange={handleChange}
+            className="p-3 border rounded-lg"
+            onChange={(e) => setName(e.target.value)}
           />
           <textarea
             id="description"
+            value={description}
             rows={5}
             placeholder="Description du service"
-            className="border p-3 rounded-lg"
-            onChange={handleChange}
+            className="p-3 border rounded-lg"
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <input
             id="imageUrl"
             type="text"
-            placeholder="Inserer une image"
-            className="border p-3 rounded-lg"
-            onChange={handleChange}
+            value={imageUrl}
+            placeholder="Inserer un lien d'image"
+            className="p-3 border rounded-lg"
+            onChange={(e) => setImageUrl(e.target.value)}
+            disabled={loading}
+          />
+          <p>ou</p>
+          <input
+            type="file"
+            id="imageUpload"
+            onChange={(e) => setFiles(e.target.files)}
+            multiple={false}
+            disabled={loading}
+            accept="image/*"
           />
           <button
-            disabled={loading}
-            className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            // disabled={loading}
+            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
           >
-            {loading ? "Loading..." : "Ajouter Service"}
+            Ajouter Service
           </button>
         </form>
-        {error && (
-          <p className="text-red-500 mt-5 text-center font-semibold">{error}</p>
+        {error ? (
+          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
+        ) : (
+          <p className="mt-5 font-semibold text-center text-green-700">
+            {isSuccess}
+          </p>
         )}
       </div>
       <Footer />

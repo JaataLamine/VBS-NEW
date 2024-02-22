@@ -27,7 +27,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-crose shadow-md">
+    <header className="shadow-md bg-crose">
       <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
         <div className="relative flex items-center justify-between">
           <Link to="/" className="inline-flex items-center">
@@ -37,7 +37,7 @@ export const Header = () => {
               width={50}
               height={40}
             />
-            <span className="ml-2 text-xl font-bold tracking-wide text-slate-900 uppercase">
+            <span className="ml-2 text-xl font-bold tracking-wide uppercase text-slate-900">
               BESOINS SERVICES
             </span>
           </Link>
@@ -61,7 +61,7 @@ export const Header = () => {
                         Prestataires
                       </li>
                     </Link>
-                    <Link to="/CreatePrestataire">
+                    <Link to="/CreateService">
                       <li className="font-medium tracking-wide text-slate-900">
                         Creer un service
                       </li>
@@ -71,7 +71,7 @@ export const Header = () => {
                   ""
                 )}
                 <Link to="/Profile" className="font-bold">
-                  <li className="relative inline-flex items-center justify-center w-full h-10 px-3 py-7 overflow-hidden bg-gray-100 rounded-full shadow-xl hover:bg-slate-700 hover:text-gray-100">
+                  <li className="relative inline-flex items-center justify-center w-full h-10 px-3 overflow-hidden bg-gray-100 rounded-full shadow-xl py-7 hover:bg-slate-700 hover:text-gray-100">
                     <span className="font-medium">{currentUser.username}</span>
                   </li>
                 </Link>
@@ -84,7 +84,7 @@ export const Header = () => {
             ) : (
               <>
                 <Link to="/SignIn">
-                  <li className="font-medium tracking-wide text-white transition-colors duration-200 inline-flex items-center justify-center h-12 px-6 tracking-wide rounded shadow-md bg-slate-700 hover:opacity-90 focus:shadow-outline focus:outline-none">
+                  <li className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition-colors duration-200 rounded shadow-md bg-slate-700 hover:opacity-90 focus:shadow-outline focus:outline-none">
                     Connection
                   </li>
                 </Link>

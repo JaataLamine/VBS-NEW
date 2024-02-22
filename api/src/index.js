@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,6 +15,7 @@ import { demandeRoute } from "./routes/demande.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
 
 const app = express();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Do not identify Express
 app.disable("x-powered-by");
@@ -19,6 +23,7 @@ app.disable("x-powered-by");
 // Convertir les donnees en json
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 // Connection to MongoDB database
 const dbConnection = async () => {

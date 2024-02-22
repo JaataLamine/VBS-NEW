@@ -16,16 +16,16 @@ export const PendingPrestataire = () => {
   console.log(isValid);
 
   // Gerer la validation du prestataire
-  const handleCheckbox = (e) => {
-    const prestataire = prestataires.find(
-      (prestataire) => prestataire.id == e.id
-    );
-    prestataire.isValid = !isValid;
-    setIsValid(prestataire.isValid); // TODO:
-    console.log(prestataire);
-    // setIsValid(!isValid);
-    // setIsValid((prev) => ({ ...prev, isValid: !isValid }));
-    // setPrestataires((prev) => ({ ...prev, isValid: !isValid }));
+  const handleCheckbox = () => {
+    // const prestataire = prestataires.find((prestataire) => {
+    //   prestataire.id == e.id;
+    // });
+    // prestataire.isValid = !isValid;
+    // setIsValid(prestataire.isValid);
+    // console.log(prestataire);
+    setIsValid(!isValid);
+    setIsValid((prev) => ({ ...prev, isValid: !isValid }));
+    setPrestataires((prev) => ({ ...prev, isValid: !isValid }));
   };
 
   // Gerer la confirmation de la validation du prestataire
@@ -51,7 +51,7 @@ export const PendingPrestataire = () => {
 
   // Gerer la suppression du prestataire
   const handleDelete = async () => {
-    const res = await fetch(`/api/prestataire/delete/${prestataire._id}`, {
+    await fetch(`/api/prestataire/delete/${prestataire._id}`, {
       method: "DELETE",
     });
   };
@@ -70,32 +70,32 @@ export const PendingPrestataire = () => {
   console.log(prestataires);
 
   return (
-    <div className="relative overflow-x-auto max-w-full mx-auto shadow-md sm:rounded-lg">
+    <div className="relative max-w-full mx-auto overflow-x-auto shadow-md sm:rounded-lg">
       {loadPrestataire ? (
         <p>Loading...</p>
       ) : (
-        <table className="w-full text-sm text-left rtl:text-right text-gray-700">
-          <caption className="caption-top text-3xl text-center font-semibold my-7">
+        <table className="w-full text-sm text-left text-gray-700 rtl:text-right">
+          <caption className="text-3xl font-semibold text-center caption-top my-7">
             Prestataire en attente de validation
           </caption>
-          <thead className="text-2xs text-center text-gray-700 uppercase bg-gray-50">
+          <thead className="text-center text-gray-700 uppercase text-2xs bg-gray-50">
             <tr>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 NOM
               </th>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 ADRESSE
               </th>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 TELEPHONE
               </th>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 SERVICE
               </th>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 VALIDER
               </th>
-              <th scope="col" className="text-lg px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 ACTION
               </th>
             </tr>
@@ -106,13 +106,13 @@ export const PendingPrestataire = () => {
                 key={prestataire.id}
                 className="bg-white border-b hover:bg-gray-50"
               >
-                <td className="text-base px-6 py-4">{prestataire.name}</td>
-                <td className="text-base px-6 py-4">{prestataire.address}</td>
-                <td className="text-base px-6 py-4">{prestataire.phone}</td>
-                <td className="text-base px-6 py-4">
+                <td className="px-6 py-4 text-base">{prestataire.name}</td>
+                <td className="px-6 py-4 text-base">{prestataire.address}</td>
+                <td className="px-6 py-4 text-base">{prestataire.phone}</td>
+                <td className="px-6 py-4 text-base">
                   {prestataire.serviceName}
                 </td>
-                <td className="text-base px-6 py-4">
+                <td className="px-6 py-4 text-base">
                   <div className="flex items-center">
                     <input
                       id={prestataire.id}
@@ -124,17 +124,17 @@ export const PendingPrestataire = () => {
                     />
                   </div>
                 </td>
-                <td className="text-base mx-auto px-6 py-4">
+                <td className="px-6 py-4 mx-auto text-base">
                   <button
                     disabled={!isValid || loading}
                     onClick={handleConfirm}
-                    className="font-medium text-blue-600 hover:underline px-6 py-4 disabled:opacity-50 disabled:hover:none"
+                    className="px-6 py-4 font-medium text-blue-600 hover:underline disabled:opacity-50 disabled:hover:none"
                   >
                     Confirmer
                   </button>
                   <button
                     onClick={handleDelete}
-                    className="font-medium text-red-600 mx-auto hover:underline ms-3"
+                    className="mx-auto font-medium text-red-600 hover:underline ms-3"
                   >
                     Supprimer
                   </button>

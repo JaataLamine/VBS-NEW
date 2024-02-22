@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 import {
   getService,
   getServices,
@@ -9,6 +10,7 @@ import {
 import { verifySuperAdmin } from "../utils/verifyToken.js";
 
 const router = Router();
+const uploadMiddleware = multer({ dest: "uploads/" });
 
 /**
  * @route GET api/service
@@ -29,7 +31,12 @@ router.get("/:id", getService);
  * @desc ajouter service
  * @access Public
  */
-router.post("/create", verifySuperAdmin, createService);
+router.post(
+  "/create",
+  verifySuperAdmin,
+  uploadMiddleware.single("file"),
+  createService
+);
 
 /**
  * @route PUT api/service/:id

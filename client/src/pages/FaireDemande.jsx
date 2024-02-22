@@ -11,10 +11,12 @@ export const FaireDemande = () => {
     address: user ? user.address : "",
     phone: user ? user.phone : "",
     isComplete: false,
+    // autreServiceName?: ""  TODO: complete later
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [demandeSuccess, setDemandeSuccess] = useState(false);
+  const [autre, setAutre] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,14 +49,14 @@ export const FaireDemande = () => {
 
   return (
     <>
-      <div className="mb-10 p-3 max-w-lg mx-auto">
-        <h1 className="text-3xl text-center font-semibold my-7">
+      <div className="max-w-lg p-3 mx-auto mb-10">
+        <h1 className="text-3xl font-semibold text-center my-7">
           Creer une Demande
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <select
             id="serviceName"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg cursor-pointer"
             onChange={handleChange}
           >
             <option value="">-- CHOISISSEZ UN SERVICE --</option>
@@ -66,13 +68,21 @@ export const FaireDemande = () => {
             <option value="menuiserie">Menuiserie</option>
             <option value="plomberie">Plomberie</option>
             <option value="mecanique">Mecanique</option>
+            <option value="autre">Autre</option>
           </select>
+          {autre && (
+            <input
+              id="autreServiceName"
+              value={formData.autreServiceName}
+              placeholder="Renseigner un autre service"
+            />
+          )}
           <input
             type="text"
             id="address"
             value={formData.address}
             placeholder="Renseigner votre adresse"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg"
             onChange={handleChange}
           />
           <input
@@ -80,22 +90,22 @@ export const FaireDemande = () => {
             id="phone"
             value={formData.phone}
             placeholder="Renseigner votre numero de telephone"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg"
             onChange={handleChange}
           />
           <input type="text" id="isComplete" hidden />
           <button
             disabled={loading}
-            className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
           >
             {loading ? "Loading" : "Valider"}
           </button>
         </form>
         {error && (
-          <p className="text-red-500 mt-5 text-center font-semibold">{error}</p>
+          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
         )}
         {demandeSuccess && (
-          <p className="text-red-500 mt-5 text-center font-semibold">
+          <p className="mt-5 font-semibold text-center text-red-500">
             Votre demande est en cours de traitement. Vous serrez appele
             ulterieurement pour une confirmation
           </p>

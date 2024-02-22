@@ -13,7 +13,9 @@ const ServiceSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
+    },
+    imageUpload: {
+      type: String,
     },
   },
   { timestamps: true }

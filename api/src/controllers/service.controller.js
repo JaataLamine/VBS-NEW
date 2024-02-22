@@ -1,4 +1,6 @@
 import { Service } from "../models/Service.js";
+import multer from "multer";
+import fs from "node:fs";
 
 // Controller pour afficher tous les services
 export const getServices = async (req, res, next) => {
@@ -22,12 +24,34 @@ export const getService = async (req, res, next) => {
 
 // Controller pour creer un service
 export const createService = async (req, res, next) => {
-  try {
-    const newService = new Service(req.body);
-    const savedService = await newService.save();
-    res.status(200).json(savedService);
-  } catch (error) {
-    next(errorHandler(500, "Impossible d'enregistrer le service"));
+  // Si une image est uploader utiliser multer
+  // Sinon on considere qu'un lien est utilise
+  if (req.file) {
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+
+    const { name, description } = req.body;
+    try {
+      const newService = await Service.create({
+        name,
+        description,
+        imageUpload: newPath,
+      });
+      res.json(200).json(newService);
+    } catch (error) {
+      next(errorHandler(500, "Impossible d'enregistrer le service"));
+    }
+  } else {
+    try {
+      const newService = new Service(req.body);
+      const savedService = await newService.save();
+      res.status(200).json(savedService);
+    } catch (error) {
+      next(errorHandler(500, "Impossible d'enregistrer le service"));
+    }
   }
 };
 

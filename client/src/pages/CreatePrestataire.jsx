@@ -79,8 +79,8 @@ export const CreatePrestataire = () => {
 
   return (
     <>
-      <div className="mb-10 p-3 max-w-lg mx-auto">
-        <h1 className="text-3xl text-center font-semibold my-7">
+      <div className="max-w-lg p-3 mx-auto mb-10">
+        <h1 className="text-3xl font-semibold text-center my-7">
           Faites une demande pour etre prestataire
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -89,7 +89,7 @@ export const CreatePrestataire = () => {
             id="name"
             value={formData.name}
             placeholder="Nom et Prénom du prestataire"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg"
             onChange={handleChange}
           />
           <input
@@ -97,7 +97,7 @@ export const CreatePrestataire = () => {
             id="address"
             value={formData.address}
             placeholder="Adresse"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg"
             onChange={handleChange}
           />
           <input
@@ -105,37 +105,38 @@ export const CreatePrestataire = () => {
             id="phone"
             value={formData.phone}
             placeholder="Numero de telephone"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg"
             onChange={handleChange}
           />
           {/* Afficher les services en tanque profession */}
           <select
             id="serviceName"
-            className="border p-3 rounded-lg"
+            className="p-3 border rounded-lg cursor-pointer"
             onChange={handleChange}
           >
-            <option value="">--Choisir une profession--</option>
+            <option value="">--CHOISIR UNE PROFESSION--</option>
             {services.map((service, idx) => (
               <option key={idx} id={service.name} value={service.name}>
                 {service.name}
               </option>
             ))}
+            <option value="autre">Autre</option>
           </select>
           <input type="text" id="isValid" hidden />
           <button
             disabled={loading}
-            className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
           >
             {loading ? "Loading..." : "Valider"}
           </button>
         </form>
         {error ? (
-          <p className="text-red-500 mt-5 text-center font-semibold">{error}</p>
+          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
         ) : (
           ""
         )}
         {prestataireSuccess && (
-          <p className="text-green-700 mt-5 text-center font-semibold">
+          <p className="mt-5 font-semibold text-center text-green-700">
             Votre demande de prestation est en cours de traitement...
             <br />
             Nous vous contacterons ulterieurement.

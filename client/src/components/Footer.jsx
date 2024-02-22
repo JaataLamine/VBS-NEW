@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
-  faTwitter,
+  faXTwitter,
   faSquareInstagram,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <div className="bg-crose min-h-screen font-montserrat">
-      <div className="flex justify-around items-center">
-        <div className="flex flex-col justify-items-center text-center mt-10">
+    <div className="min-h-screen bg-crose font-montserrat">
+      <div className="flex items-center justify-around">
+        <div className="flex flex-col mt-10 text-center justify-items-center">
           <img
             src="images/signe.png"
             alt="logo"
@@ -20,10 +20,10 @@ export const Footer = () => {
             className="ml-10"
           />
           <h1 className="text-5xl font-bold text-gray-900">VOSBESOINS</h1>
-          <h2 className="text-lg tracking-widestter font-bold text-gray-900 mt-3">
+          <h2 className="mt-3 text-lg font-bold text-gray-900 tracking-widestter">
             SERVICES
           </h2>
-          <h5 className="text-xs font-bold mt-5">VOS BESOINS NOS SERVICES</h5>
+          <h5 className="mt-5 text-xs font-bold">VOS BESOINS NOS SERVICES</h5>
         </div>
         <div className="">
           <ul className="flex flex-col gap-8 text-cvert">
@@ -50,7 +50,7 @@ export const Footer = () => {
             </li>
             <li>
               <a href="#">
-                <FontAwesomeIcon icon={faTwitter} />
+                <FontAwesomeIcon icon={faXTwitter} />
               </a>
             </li>
             <li>
@@ -68,7 +68,8 @@ export const Footer = () => {
       </div>
       <div className="flex items-end pt-64">
         <small className="">
-          Copyright © 2023 All Rights Reserved by Mame Bou FALL
+          Copyright © 2023 All Rights Reserved by Mame Bou FALL - and - Lamine B
+          DIATTA
         </small>
       </div>
     </div>

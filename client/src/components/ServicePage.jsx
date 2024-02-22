@@ -56,13 +56,17 @@ export const ServicePage = () => {
           </h1>
           <button
             onClick={handleDemande}
-            className="bg-slate-700 rounded-md shadow-lg text-white font-semibold text-2xl p-2 hover:opacity-90"
+            className="p-2 text-2xl font-semibold text-white rounded-md shadow-lg bg-slate-700 hover:opacity-90"
           >
             Faire la demande
           </button>
         </div>
         <img
-          src={serviceDetails.imageUrl}
+          src={
+            serviceDetails.imageUrl
+              ? serviceDetails.imageUrl
+              : `http://localhost:5000/${serviceDetails.imageUpload}`
+          }
           alt={serviceDetails.name}
           className="object-cover w-full h-64 bg-center rounded-lg"
         />
