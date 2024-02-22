@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Footer } from "../components/Footer";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -11,18 +11,58 @@ export const FaireDemande = () => {
     address: user ? user.address : "",
     phone: user ? user.phone : "",
     isComplete: false,
-    // autreServiceName?: ""  TODO: complete later
+    autreServiceName: "",
   });
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [demandeSuccess, setDemandeSuccess] = useState(false);
   const [autre, setAutre] = useState(false);
   const navigate = useNavigate();
 
+  // Gere l'etat de la formulaire
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    if (
+      e.target.id === "address" ||
+      e.target.id === "phone" ||
+      e.target.id === "autreServiceName"
+    ) {
+      setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    }
+
+    if (e.target.id === "serviceName") {
+      const index = e.target.selectedIndex;
+      const el = e.target.childNodes[index];
+      const option = el.getAttribute("id");
+      if (option === "autre") {
+        setAutre(!autre);
+        setFormData((prev) => ({ ...prev, [e.target.id]: option }));
+      } else if (option !== "autre") {
+        setAutre(false);
+      }
+      setFormData((prev) => ({ ...prev, [e.target.id]: option }));
+    }
   };
+
   console.log(formData);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/service");
+        const jsonData = await res.json();
+        setServices(jsonData);
+        setLoading(false);
+      } catch (error) {
+        console.error(error.message);
+        setLoading(false);
+      }
+      return services;
+    };
+    fetchServices();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -60,22 +100,25 @@ export const FaireDemande = () => {
             onChange={handleChange}
           >
             <option value="">-- CHOISISSEZ UN SERVICE --</option>
-            <option value="menagere">Menage</option>
-            <option value="lingeriere">Lingerie</option>
-            <option value="livreur">Livreur</option>
-            <option value="professeur">Etude</option>
-            <option value="traiteur">Traiteur</option>
-            <option value="menuiserie">Menuiserie</option>
-            <option value="plomberie">Plomberie</option>
-            <option value="mecanique">Mecanique</option>
-            <option value="autre">Autre</option>
+            {services.map((service, idx) => (
+              <option key={idx} id={service.name} value={service.name}>
+                {service.name}
+              </option>
+            ))}
+            <option id="autre" value="autre">
+              Autre
+            </option>
           </select>
-          {autre && (
+          {autre ? (
             <input
               id="autreServiceName"
               value={formData.autreServiceName}
               placeholder="Renseigner un autre service"
+              className="p-3 border rounded-lg"
+              onChange={handleChange}
             />
+          ) : (
+            ""
           )}
           <input
             type="text"

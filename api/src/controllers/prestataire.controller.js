@@ -25,16 +25,24 @@ export const pendingPrestataires = async (req, res, next) => {
 
 // Controller pour enregistrer un prestataire
 export const register = async (req, res, next) => {
-  const { name, address, phone, serviceName } = req.body;
+  const { name, address, phone, serviceName, autreServiceName } = req.body;
   try {
     if (!name || !address || !phone || !serviceName)
       next(errorHandler(400, "Desole vous devez renseigner tous les champs!"));
+
+    // Si le champs autre est selectionne
+    if (serviceName === "autre") {
+      if (!autreServiceName) {
+        next(errorHandler(400, "Desole vous devez renseigner une profession!"));
+      }
+    }
 
     const prestataire = await Prestataire.findOne({
       name,
       address,
       phone,
       serviceName,
+      autreServiceName,
     });
     // Verifier si le prestataire existe
     if (prestataire)

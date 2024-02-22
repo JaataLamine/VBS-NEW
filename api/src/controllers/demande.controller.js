@@ -17,15 +17,30 @@ export const faireDemande = async (req, res, next) => {
 // Controller pour faire une demande by form
 export const faireDemandeByForm = async (req, res, next) => {
   try {
-    const { serviceName, username, address, phone, isComplete } = req.body;
+    const {
+      serviceName,
+      username,
+      address,
+      phone,
+      autreServiceName,
+      isComplete,
+    } = req.body;
+
     if (!serviceName || !username || !address || !phone)
       next(errorHandler(400, "Desole vous devez renseigner tous les champs!"));
 
+    // Si le champs autre est selectionne
+    if (serviceName === "autre") {
+      if (!autreServiceName) {
+        next(errorHandler(400, "Desole vous devez renseigner un service!"));
+      }
+    }
     const demandeByForm = await DemandeByForm.findOne({
       serviceName,
       username,
       address,
       phone,
+      autreServiceName,
       isComplete,
     });
 

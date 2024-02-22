@@ -8,12 +8,14 @@ export const CreatePrestataire = () => {
     address: "",
     phone: "",
     serviceName: "",
+    autreServiceName: "",
     isValid: false,
   });
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [prestataireSuccess, setPrestataireSuccess] = useState(false);
+  const [autre, setAutre] = useState(false);
   const navigate = useNavigate();
 
   // Gere l'etat de la formulaire
@@ -21,15 +23,24 @@ export const CreatePrestataire = () => {
     if (
       e.target.id === "name" ||
       e.target.id === "address" ||
-      e.target.id === "phone"
+      e.target.id === "phone" ||
+      e.target.id === "autreServiceName"
     ) {
       setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     }
+
+    console.log(formData);
 
     if (e.target.id === "serviceName") {
       const index = e.target.selectedIndex;
       const el = e.target.childNodes[index];
       const option = el.getAttribute("id");
+      if (option === "autre") {
+        setAutre(!autre);
+        setFormData((prev) => ({ ...prev, [e.target.id]: option }));
+      } else if (option !== "autre") {
+        setAutre(false);
+      }
       setFormData((prev) => ({ ...prev, [e.target.id]: option }));
     }
   };
@@ -108,6 +119,17 @@ export const CreatePrestataire = () => {
             className="p-3 border rounded-lg"
             onChange={handleChange}
           />
+          {autre ? (
+            <input
+              id="autreServiceName"
+              value={formData.autreServiceName}
+              placeholder="Renseigner une autre profession"
+              className="p-3 border rounded-lg"
+              onChange={handleChange}
+            />
+          ) : (
+            ""
+          )}
           {/* Afficher les services en tanque profession */}
           <select
             id="serviceName"
@@ -120,7 +142,9 @@ export const CreatePrestataire = () => {
                 {service.name}
               </option>
             ))}
-            <option value="autre">Autre</option>
+            <option id="autre" value="autre">
+              Autre
+            </option>
           </select>
           <input type="text" id="isValid" hidden />
           <button
