@@ -1,5 +1,4 @@
 import { Service } from "../models/Service.js";
-import multer from "multer";
 import fs from "node:fs";
 
 // Controller pour afficher tous les services

@@ -5,21 +5,21 @@ import { Services } from "../components/Services";
 export const Home = () => {
   return (
     <>
-      <div className="relative flex-col-reverse py-16 lg:pt-0 lg:flex-col lg:pb-0 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        <div className="inset-y-0 top-0 right-0 z-0 max-w-xl px-4 mx-auto md:px-0 lg:pr-0 lg:mb-0 lg:mx-0 lg:w-7/12 lg:max-w-full lg:absolute xl:px-0">
+      <div className="relative grid flex-col-reverse grid-cols-1 gap-4 py-16 lg:pt-0 lg:flex-col lg:pb-0 lg:grid-cols-3 lg:gap-8">
+        <div className="inset-y-0 right-0 z-0 px-4 mx-auto md:px-0 lg:pr-0 lg:mb-0 lg:mx-0 lg:max-w-full lg:absolute xl:px-0">
           <img
-            className="object-cover h-56 rounded w-full shadow-lg lg:rounded-none
-          lg:shadow-none md:h-96 lg:h-full"
+            className="object-cover w-full h-56 rounded shadow-lg lg:rounded-none lg:shadow-none md:h-96 lg:h-full"
             src="http://localhost:5173/images/banner.jpg"
             alt="work"
           />
         </div>
-        <div className="relative flex flex-col w-full items-start max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:max-w-screen-xl lg:col-span-2">
-          <div className="mb-16 lg:my-40 lg:max-w-lg lg:pr-5">
-            <h1 className="mb-5 font-montserrat text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl leading-10">
+        <div className="relative flex flex-col items-start w-full max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:max-w-screen-xl lg:col-span-2">
+          <div className="mb-16 ml-16 lg:my-40 lg:max-w-full lg:pr-5">
+            <h1 className="mb-5 text-3xl font-bold leading-10 tracking-tight text-gray-900 font-montserrat sm:text-3xl mx-w-full">
               Trouver une personne qualifiee
               <br className="hidden md:block" />
-              ideale pour tous vos services du{" "}
+              ideale pour tous vos services du
+              <br className="hidden md:block" />
               <span className="inline-block text-slate-700">quotidien</span>
             </h1>
             <div className="flex items-center">

@@ -36,7 +36,6 @@ export const CreateService = () => {
     if (files) {
       try {
         setLoading(true);
-        setError(false);
         const formData = new FormData();
         formData.set("name", name);
         formData.set("description", description);
@@ -47,7 +46,6 @@ export const CreateService = () => {
           credentials: "include",
         });
         const data = await res.json();
-        setLoading(false);
         if (data.success === false) {
           setError(data.message);
           return;
@@ -61,14 +59,12 @@ export const CreateService = () => {
     } else if (imageUrl.length > 0) {
       try {
         setLoading(true);
-        setError(false);
         const res = await fetch("/api/service/create", {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({ name, description, imageUrl }),
         });
         const data = await res.json();
-        setLoading(false);
         if (data.success === false) {
           setError(data.message);
           return;
