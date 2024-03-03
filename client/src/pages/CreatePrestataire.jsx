@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Footer } from "../components/Footer";
+import { Button } from "../components/Button";
+import { useFetchServices } from "../hooks/useFetchServices";
+import { ErrorDisplay } from "../components/ErrorDisplay";
 
 export const CreatePrestataire = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +14,6 @@ export const CreatePrestataire = () => {
     autreServiceName: "",
     isValid: false,
   });
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [prestataireSuccess, setPrestataireSuccess] = useState(false);
   const [autre, setAutre] = useState(false);
@@ -45,22 +46,7 @@ export const CreatePrestataire = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/service");
-        const jsonData = await res.json();
-        setServices(jsonData);
-        setLoading(false);
-      } catch (error) {
-        console.error(error.message);
-        setLoading(false);
-      }
-      return services;
-    };
-    fetchServices();
-  }, []);
+  const { services, loading, setLoading } = useFetchServices("/api/service");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,18 +133,9 @@ export const CreatePrestataire = () => {
             </option>
           </select>
           <input type="text" id="isValid" hidden />
-          <button
-            disabled={loading}
-            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
-          >
-            {loading ? "Loading..." : "Valider"}
-          </button>
+          <Button text="Valider" loading={loading} />
         </form>
-        {error ? (
-          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
-        ) : (
-          ""
-        )}
+        {error ? <ErrorDisplay error={error} /> : ""}
         {prestataireSuccess && (
           <p className="mt-5 font-semibold text-center text-green-700">
             Votre demande de prestation est en cours de traitement...

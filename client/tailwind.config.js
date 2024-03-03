@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      // screens: {
+      //   sm: "480px",
+      // },
       colors: {
         cvert: "#2F4F4F",
         crose: "#FFE4E1",
@@ -15,11 +18,12 @@ export default {
       },
     },
     letterSpacing: {
-      widestter: "1.5em",
+      widestter: "0.85em",
     },
   },
   corePlugins: {
     aspectRatio: false,
   },
+  // eslint-disable-next-line no-undef
   plugins: [require("@tailwindcss/aspect-ratio")],
 };

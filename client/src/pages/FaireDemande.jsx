@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Footer } from "../components/Footer";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { Button } from "../components/Button";
+import { useFetchServices } from "../hooks/useFetchServices";
 
 export const FaireDemande = () => {
   const { user } = useSelector((state) => state.user);
@@ -13,8 +16,6 @@ export const FaireDemande = () => {
     isComplete: false,
     autreServiceName: "",
   });
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [demandeSuccess, setDemandeSuccess] = useState(false);
   const [autre, setAutre] = useState(false);
@@ -46,22 +47,7 @@ export const FaireDemande = () => {
 
   console.log(formData);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/service");
-        const jsonData = await res.json();
-        setServices(jsonData);
-        setLoading(false);
-      } catch (error) {
-        console.error(error.message);
-        setLoading(false);
-      }
-      return services;
-    };
-    fetchServices();
-  }, []);
+  const { services, loading, setLoading } = useFetchServices("/api/service");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,16 +123,9 @@ export const FaireDemande = () => {
             onChange={handleChange}
           />
           <input type="text" id="isComplete" hidden />
-          <button
-            disabled={loading}
-            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
-          >
-            {loading ? "Loading" : "Valider"}
-          </button>
+          <Button text="Valider" loading={loading} />
         </form>
-        {error && (
-          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
-        )}
+        {error && <ErrorDisplay error={error} />}
         {demandeSuccess && (
           <p className="mt-5 font-semibold text-center text-red-500">
             Votre demande est en cours de traitement. Vous serrez appele

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Footer } from "../components/Footer";
+import { Button } from "../components/Button";
+import { ErrorDisplay } from "../components/ErrorDisplay";
 
 // Page de creation de service
 export const CreateService = () => {
@@ -122,15 +124,10 @@ export const CreateService = () => {
             disabled={loading}
             accept="image/*"
           />
-          <button
-            // disabled={loading}
-            className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
-          >
-            Ajouter Service
-          </button>
+          <Button text="Ajouter Service" />
         </form>
         {error ? (
-          <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
+          <ErrorDisplay error={error} />
         ) : (
           <p className="mt-5 font-semibold text-center text-green-700">
             {isSuccess}

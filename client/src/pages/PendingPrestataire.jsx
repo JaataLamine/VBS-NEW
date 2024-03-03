@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   prestataireAccepted,
   prestataireDeny,
   prestataireSubscribe,
 } from "../redux/prestataire/prestataireSlice";
+import { useFetchPrestataires } from "../hooks/useFetchPrestataires";
 
 export const PendingPrestataire = () => {
-  const [prestataires, setPrestataires] = useState([]);
   const [isValid, setIsValid] = useState(false);
-  const [loadPrestataire, setLoadPrestataire] = useState(false);
   const { prestataire, loading } = useSelector((state) => state.prestataire);
   const dispatch = useDispatch();
+  const { prestataires, setPrestataires, loadPrestataire } =
+    useFetchPrestataires("/api/prestataire/pending");
 
   console.log(isValid);
 
@@ -55,17 +56,6 @@ export const PendingPrestataire = () => {
       method: "DELETE",
     });
   };
-
-  useEffect(() => {
-    const fetchPrestataires = async () => {
-      dispatch(prestataireSubscribe());
-      const res = await fetch("/api/prestataire/pending");
-      const resData = await res.json();
-      setPrestataires(resData);
-      setLoadPrestataire(false);
-    };
-    fetchPrestataires();
-  }, []);
 
   console.log(prestataires);
 

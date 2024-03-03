@@ -1,26 +1,8 @@
-import { useEffect, useState } from "react";
-import { ServiceCard } from "./SerciceCard";
+import { ServiceList } from "./ServiceList";
+import { useFetchServices } from "../hooks/useFetchServices";
 
 export const Services = () => {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/service");
-        const jsonData = await res.json();
-        setServices(jsonData);
-        setLoading(false);
-      } catch (error) {
-        console.error(error.message);
-        setLoading(false);
-      }
-      return services;
-    };
-    fetchServices();
-  }, []);
+  const { services, loading } = useFetchServices("/api/service");
 
   return (
     <div className="bg-white">
@@ -29,21 +11,8 @@ export const Services = () => {
       </h1>
       <div className="max-w-2xl px-4 py-10 mx-auto sm:px-6 sm:py-10 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {services.map((service, idx) => (
-              <ServiceCard
-                key={idx}
-                id={service._id}
-                name={service.name}
-                imageUrl={service.imageUrl}
-                imageUpload={service.imageUpload}
-              />
-            ))}
-          </div>
-        )}
+        {loading && <p>Loading...</p>}
+        {services && <ServiceList services={services} />}
       </div>
     </div>
   );

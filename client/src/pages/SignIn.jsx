@@ -34,13 +34,17 @@ export const SignIn = () => {
         return;
       }
       dispatch(signInSuccess(data));
-      if (currentUser) {
-        if (currentUser.isSuperAdmin) {
-          navigate("/SuperAdminDashboard/Admin");
-        } else if (currentUser.isAdmin) {
-          navigate("/AdminDashboard/Demande");
-        }
+      // currentUser === currentUser
+      //   ? navigate("/")
+      //   : currentUser.isSuperAdmin
+      //   ? navigate("/SuperAdminDashboard/")
+      //   : navigate("/AdminDashboard/");
+      if (currentUser === currentUser) {
         navigate("/");
+      } else if (currentUser === currentUser.isSuperAdmin) {
+        navigate("/SuperAdminDashboard/");
+      } else {
+        navigate("/AdminDashboard/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -48,26 +52,26 @@ export const SignIn = () => {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Connection</h1>
+    <div className="max-w-lg p-3 mx-auto">
+      <h1 className="text-3xl font-semibold text-center my-7">Connection</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           id="username"
           placeholder="Nom d'utilisateur"
-          className="border p-3 rounded-lg"
+          className="p-3 border rounded-lg"
           onChange={handleChange}
         />
         <input
           type="password"
           id="password"
           placeholder="Mot de passe"
-          className="boder p-3 rounded-lg"
+          className="p-3 rounded-lg boder"
           onChange={handleChange}
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-80"
         >
           {loading ? "Loading..." : "Connection"}
         </button>
@@ -75,13 +79,13 @@ export const SignIn = () => {
       <div className="flex gap-2 mt-5 text-xl">
         <p>Vous n&apos;avez pas de compte?</p>
         <Link to="/signup">
-          <span className="hover:underline font-semibold text-blue-800">
+          <span className="font-semibold text-blue-800 hover:underline">
             Inscrivez-vous
           </span>
         </Link>
       </div>
       {error && (
-        <p className="text-red-500 mt-5 text-center font-semibold">{error}</p>
+        <p className="mt-5 font-semibold text-center text-red-500">{error}</p>
       )}
     </div>
   );
